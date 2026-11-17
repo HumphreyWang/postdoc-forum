@@ -14,7 +14,7 @@ export const committees: {soc: CommitteeMember[]; loc: CommitteeMember[]} = {
     {name: "Suyeon Son", affiliation: "PKU/KIAA", email: "sonsuyeon@pku.edu.cn"},
     {name: "Anindya Saha", affiliation: "PKU/KIAA", email: "anindya@pku.edu.cn"},
     {name: "Ekta Sharma", affiliation: "PKU/KIAA", email: "sharmaekta@pku.edu.cn"},
-    {name: "Jessica Doppel", affiliation: "THU/DoA", email: null},
+    {name: "Jessica Doppel", affiliation: "THU/DoA", email: "jessicadoppel@tsinghua.edu.cn"},
     {name: "Fujia Li", affiliation: "THU/DoA", email: "lifujia@mail.tsinghua.edu.cn"},
     {name: "David Robinson", affiliation: "THU/DoA", email: "drobinson@mail.tsinghua.edu.cn"},
     {name: "Zhao Su", affiliation: "THU/DoA", email: "suzhao@mail.tsinghua.edu.cn"}
