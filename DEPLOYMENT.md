@@ -1,276 +1,48 @@
-# 🚀 Deployment Guide: PKU + THU Joint Postdoc Forum 2025
+# Deployment
 
-This guide explains how to build and deploy the static website using nginx.
+Deploy AstroConnect 2026 as a Node.js service with private persistent storage. The application includes live registration and passport-upload handlers; it requires server execution.
 
-## 📋 Prerequisites
+## Build and run
 
-- **Node.js** (version 18 or higher)
-- **npm** or **yarn** package manager
-- **nginx** web server
-- **Git** (for cloning the repository)
-
-## 🔧 Building Static Assets
-
-### Option 1: Using the Build Script (Recommended)
-
-#### Linux/macOS:
-```bash
-# Make script executable (first time only)
-chmod +x build-static.sh
-
-# Run the build script
-./build-static.sh
-```
-
-#### Windows:
-```cmd
-# Run the build script
-build-static.bat
-```
-
-### Option 2: Manual Build Process
-
-1. **Install dependencies:**
-   ```bash
-   npm install
-   # or
-   yarn install
-   ```
-
-2. **Temporarily enable static export in `next.config.ts`:**
-   ```typescript
-   const nextConfig: NextConfig = {
-     output: 'export',
-     trailingSlash: true,
-     images: {
-       unoptimized: true
-     }
-   };
-   ```
-
-3. **Build the project:**
-   ```bash
-   npm run build
-   # or
-   yarn build
-   ```
-
-4. **Static files will be generated in the `out/` directory**
-
-## 📁 Build Output Structure
-
-After building, the `out/` directory will contain:
-
-```
-out/
-├── en/                           # English version
-│   ├── index.html               # Homepage
-│   ├── registration/
-│   │   └── index.html          # Registration page
-│   ├── program/
-│   │   └── index.html          # Program page
-│   ├── venue/
-│   │   └── index.html          # Venue page
-│   └── contact/
-│       └── index.html          # Contact page
-├── zh/                          # Chinese version
-│   ├── index.html               # 首页
-│   ├── registration/
-│   │   └── index.html          # 注册页面
-│   ├── program/
-│   │   └── index.html          # 日程页面
-│   ├── venue/
-│   │   └── index.html          # 会议地点页面
-│   └── contact/
-│       └── index.html          # 联系页面
-├── _next/                       # Next.js assets
-├── registration-qr-code.jpg     # QR code image
-└── deployment-info.txt          # Build information
-```
-
-## 🌐 Nginx Deployment
-
-### Step 1: Copy Static Files
-
-Copy all files from the `out/` directory to your nginx web root:
+Use Node.js 24 LTS and install the committed dependencies:
 
 ```bash
-# Example nginx web root path
-sudo cp -r out/* /var/www/html/postdoc-forum/
+npm ci
+npm run build
 ```
 
-### Step 2: Configure Nginx
+Configure the service environment:
 
-1. **Copy the nginx configuration:**
-   ```bash
-   sudo cp nginx.conf /etc/nginx/sites-available/postdoc-forum
-   ```
-
-2. **Edit the configuration file:**
-   ```bash
-   sudo nano /etc/nginx/sites-available/postdoc-forum
-   ```
-
-3. **Update the following values:**
-   - `server_name`: Replace `your-domain.com` with your actual domain
-   - `root`: Update the path to your web root directory
-   - SSL certificate paths (if using HTTPS)
-
-4. **Enable the site:**
-   ```bash
-   sudo ln -s /etc/nginx/sites-available/postdoc-forum /etc/nginx/sites-enabled/
-   ```
-
-5. **Test nginx configuration:**
-   ```bash
-   sudo nginx -t
-   ```
-
-6. **Reload nginx:**
-   ```bash
-   sudo systemctl reload nginx
-   ```
-
-### Step 3: Configure DNS (if applicable)
-
-Point your domain to your server's IP address:
-
-```
-A Record: your-domain.com → your-server-ip
-CNAME Record: www.your-domain.com → your-domain.com
+```dotenv
+FORUM_FORMS_ENABLED=true
+FORUM_DATA_DIR=/srv/astroconnect-2026/private-data
+FORUM_PUBLIC_ORIGIN=https://your-conference-domain.example
 ```
 
-## 🔒 SSL/HTTPS Setup (Optional but Recommended)
+Use the actual public HTTPS origin, with no trailing slash. The service account must be able to create and write its private data directory. Keep the directory on persistent storage, outside any public document root. Back up the records and `.campus-identity-key` together and restrict access to the service account and authorized organizers.
 
-### Using Let's Encrypt (Certbot):
+Start the service under a process manager:
 
-1. **Install Certbot:**
-   ```bash
-   sudo apt install certbot python3-certbot-nginx
-   ```
+```bash
+npm start -- --hostname 127.0.0.1 --port 3000
+```
 
-2. **Obtain SSL certificate:**
-   ```bash
-   sudo certbot --nginx -d KIAA-DoA-postdoc-forum-2025.kiaa-pku.cn
-   ```
+Configure an HTTPS reverse proxy. `nginx.conf` is a local HTTP example: replace its server name and configure TLS for the real domain. Preserve the public Host header and forwarded protocol. The proxy permits 6 MiB request bodies; the application separately enforces a 5 MiB image limit and bounded form metadata.
 
-3. **Certbot will automatically update your nginx configuration**
+After deployment, verify the public registration URL and a controlled submission using the configured origin and private storage. Configure deployment-side request throttling appropriate to the server before broad public access.
 
-## 🧪 Testing the Deployment
+## Submission handling
 
-1. **Test basic connectivity:**
-   ```bash
-   curl -I http://your-domain.com
-   ```
+Successful submissions are stored with status `received`. Registration and any abstract, campus document details and passport photo are committed in one atomic record. Review records privately and communicate attendance/presentation decisions to participants. Automatic email delivery and a web-based admin interface are not configured.
 
-2. **Check language redirects:**
-   - `https://KIAA-DoA-postdoc-forum-2025.kiaa-pku.cn/` → should redirect to `/en/`
-   - `https://KIAA-DoA-postdoc-forum-2025.kiaa-pku.cn/en/` → English homepage
-   - `https://KIAA-DoA-postdoc-forum-2025.kiaa-pku.cn/zh/` → Chinese homepage
+The event capacity is 50 attendees; submission receipts are not automatic attendance confirmations. Final participant selection remains an organizer workflow.
 
-3. **Test specific pages:**
-   - `https://KIAA-DoA-postdoc-forum-2025.kiaa-pku.cn/en/registration/` → English registration
-   - `https://KIAA-DoA-postdoc-forum-2025.kiaa-pku.cn/zh/registration/` → Chinese registration
+Set `FORUM_FORMS_ENABLED=false` and restart to close registration. Change dates in `src/lib/forum.ts` and rebuild if deadlines change.
 
-4. **Check QR code accessibility:**
-   - `https://KIAA-DoA-postdoc-forum-2025.kiaa-pku.cn/registration-qr-code.jpg`
+## Storage and maintenance
 
-## 🔧 Nginx Configuration Features
-
-The provided nginx configuration includes:
-
-- ✅ **Automatic language routing** (root `/` redirects to `/en/`)
-- ✅ **Gzip compression** for better performance
-- ✅ **Static asset caching** with proper cache headers
-- ✅ **Security headers** (X-Frame-Options, CSP, etc.)
-- ✅ **Error page handling**
-- ✅ **SSL/HTTPS ready** configuration
-- ✅ **Fallback routing** for unknown URLs
-
-## 🔄 Updating the Website
-
-1. **Pull latest changes:**
-   ```bash
-   git pull origin main
-   ```
-
-2. **Rebuild static assets:**
-   ```bash
-   ./build-static.sh
-   ```
-
-3. **Copy updated files:**
-   ```bash
-   sudo cp -r out/* /var/www/html/postdoc-forum/
-   ```
-
-4. **No nginx restart needed** (serving static files)
-
-## 🐛 Troubleshooting
-
-### Common Issues:
-
-1. **404 errors on page refresh:**
-   - Check nginx configuration for proper `try_files` directives
-   - Ensure all `index.html` files are present in subdirectories
-
-2. **CSS/JS not loading:**
-   - Verify `_next/` directory is accessible
-   - Check browser console for 404 errors
-   - Ensure proper caching headers
-
-3. **Language switching not working:**
-   - Check nginx URL rewriting rules
-   - Verify both `/en/` and `/zh/` directories exist
-
-4. **QR code image not displaying:**
-   - Confirm `registration-qr-code.jpg` is in the web root
-   - Check file permissions
-
-### Nginx Log Files:
-
-- **Access logs:** `/var/log/nginx/postdoc-forum-access.log`
-- **Error logs:** `/var/log/nginx/postdoc-forum-error.log`
-
-### Common Warnings:
-
-**Note:** In shared hosting environments with multiple SSL sites, you may see these warnings during `nginx -t`:
-- `"protocol options redefined for 0.0.0.0:443"` - This occurs when multiple sites define SSL settings for the same IP:port. This is normal and doesn't affect functionality.
-- `"duplicate MIME type"` - This happens when multiple sites define overlapping gzip MIME types. Our configuration uses minimal MIME types to avoid conflicts.
-
-These warnings don't prevent nginx from working correctly but indicate configuration overlaps between different sites on the same server.
-
-## 📊 Performance Optimization
-
-### Additional nginx optimizations:
-
-1. **Enable HTTP/2:**
-   ```nginx
-   listen 443 ssl http2;
-   ```
-
-2. **Add more aggressive caching:**
-   ```nginx
-   location ~* \.(css|js)$ {
-       expires 1y;
-       add_header Cache-Control "public, immutable";
-   }
-   ```
-
-3. **Enable brotli compression** (if available):
-   ```nginx
-   brotli on;
-   brotli_comp_level 6;
-   brotli_types text/plain text/css application/json application/javascript;
-   ```
-
-## 📞 Support
-
-For issues related to:
-- **Building:** Check build script logs and Node.js version
-- **Deployment:** Review nginx error logs and configuration
-- **SSL:** Verify certificate installation and renewal
-
----
-
-**Generated with [Claude Code](https://claude.com/claude-code)**
+- Keep live records, keys, environment files and organizer exports out of Git and public directories. `.gitignore` covers the project's documented paths.
+- Use `scripts/export-campus.mjs` only from an authorized local/server session. Its JSON and image outputs contain decrypted identity materials and must remain private.
+- Keep the encryption key in the backup set. The application cannot recover identity materials without it.
+- The file store targets a single service instance with persistent disk. A multi-instance or ephemeral deployment needs shared durable storage and appropriate key management.
+- The local offline HTML viewing copy cannot receive registrations. The old static-build scripts stop with an explanation to prevent accidentally removing the server functionality.

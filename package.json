@@ -1,28 +1,36 @@
 {
-  "name": "post-doc-forum-2025",
-  "version": "0.1.0",
+  "name": "astroconnect-2026",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
+    "dev": "next dev --webpack",
+    "build": "next build --webpack",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit",
+    "test:smoke": "node scripts/smoke-test.mjs",
+    "test:deadlines": "node scripts/deadline-test.cjs",
+    "export:preview": "node scripts/export-preview.cjs"
   },
   "dependencies": {
-    "next": "16.0.0",
-    "next-intl": "^4.4.0",
-    "react": "19.2.0",
-    "react-dom": "19.2.0"
+    "next": "16.4.6",
+    "next-intl": "4.15.1",
+    "react": "19.2.9",
+    "react-dom": "19.2.9",
+    "sharp": "0.35.5"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4",
+    "@tailwindcss/postcss": "4.1.18",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
-    "eslint-config-next": "16.0.0",
-    "tailwindcss": "^4",
+    "eslint-config-next": "16.4.6",
+    "tailwindcss": "4.1.18",
     "typescript": "^5"
   },
-  "packageManager": "yarn@4.10.3+sha512.c38cafb5c7bb273f3926d04e55e1d8c9dfa7d9c3ea1f36a4868fa028b9e5f72298f0b7f401ad5eb921749eb012eb1c3bb74bf7503df3ee43fd600d14a018266f"
+  "packageManager": "npm@10.5.0",
+  "engines": {
+    "node": ">=22.13.0"
+  }
 }

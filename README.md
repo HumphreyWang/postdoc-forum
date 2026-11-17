@@ -1,180 +1,85 @@
-# PKU + THU Joint Postdoc Forum in Astronomy and Astrophysics 2025
+# AstroConnect 2026
 
-A professional static website for the joint Postdoc Forum in Astronomy and Astrophysics, co-hosted by the Kavli Institute of Astronomy and Astrophysics at Peking University (KIAA) and the Department of Astronomy at Tsinghua University (DoA).
+English-language website for the **Beijing Joint Astrophysics Postdoc Forum**, 14–15 December 2026, hosted at KIAA, Peking University, and the Department of Astronomy, Tsinghua University.
 
-## 🌟 Features
+This repository now contains the 2026 website. The local folder and existing GitHub repository retain the name `post-doc-forum-2025` to preserve the repository history.
 
-- **Bilingual Support**: Full English and Chinese (中文) language support with seamless switching
-- **Responsive Design**: Mobile-first design that works perfectly on all device sizes
-- **Astronomy Theme**: Dark cosmic theme with animated starry background effects
-- **Static Site Generation**: Pre-built static pages for fast loading and easy deployment
-- **Accessibility**: WCAG compliant with proper semantic HTML and ARIA labels
+## Website
 
-## 📅 Event Details
+- Conference overview, scientific scope, programme, venues and committee contacts.
+- Approximately 20 research talks (15-minute presentation + 3-minute Q&A) and 25 posters with 1-minute flash talks.
+- Attendance limited to 50 participants, no registration fee, lunch and first-day dinner provided.
+- A combined registration and abstract form. Talk applicants indicate whether they would accept a poster instead.
+- A maximum of 150 words for abstracts, optional discussion-topic preferences, and downloadable submission receipts.
+- Campus-entry details: ID card or passport number; passport holders also provide nationality and an information-page photo.
 
-- **Date**: December 14-15, 2026
-- **Venues**:
-  - Day 1: KIAA, Peking University
-  - Day 2: DoA, Tsinghua University
-- **Participants**: Limited to 40 participants
-- **Registration**: Free of charge
+The server saves submissions with status `received`. A receipt confirms receipt of the submission; organizers confirm participation and presentation arrangements separately. Automatic confirmation email is not configured.
 
-## 🚀 Technology Stack
+## Requirements and local development
 
-- **Framework**: Next.js 16 with App Router
-- **Styling**: TailwindCSS with custom cosmic theme
-- **Internationalization**: next-intl for bilingual support
-- **Deployment**: Static site export ready for any hosting platform
-- **TypeScript**: Full type safety
+Use **Node.js 24 LTS** (`.nvmrc`) and npm. The dependency lockfile is committed.
 
-## 📁 Project Structure
-
-```
-src/
-├── app/
-│   ├── [locale]/           # Internationalized routes
-│   │   ├── contact/        # Contact information page
-│   │   ├── program/        # Event schedule page
-│   │   ├── registration/   # Registration form page
-│   │   ├── venue/          # Venue information page
-│   │   ├── layout.tsx      # Main layout with navigation
-│   │   └── page.tsx        # Homepage
-│   └── layout.tsx          # Root layout
-├── components/
-│   ├── Navigation.tsx      # Main navigation component
-│   └── Footer.tsx          # Site footer
-├── i18n.ts                 # Internationalization configuration
-└── middleware.ts           # Locale routing middleware
-
-messages/
-├── en.json                 # English translations
-└── zh.json                 # Chinese translations
+```bash
+npm ci
+npm run dev
 ```
 
-## 🎨 Design Features
+Open `http://localhost:3000/en`. The root path redirects to English. Former Chinese links and the former abstract page redirect to the current pages.
 
-### Cosmic Theme
-- Dark gradient backgrounds (slate-900 to purple-900)
-- Animated starry background with twinkling effects
-- Blue and purple accent colors representing the cosmos
-- Glassmorphism effects with backdrop blur
+For a production build:
 
-### Typography
-- Geist Sans font family for modern readability
-- Responsive text sizing from mobile to desktop
-- Proper heading hierarchy for accessibility
+```bash
+npm run build
+npm start
+```
 
-### Components
-- Interactive navigation with mobile hamburger menu
-- Card-based layout for better content organization
-- Hover effects and smooth transitions
-- Form validation and user feedback
+The registration endpoint requires a Node server and persistent private storage. See [DEPLOYMENT.md](DEPLOYMENT.md). A static HTML copy is suitable for viewing the site but cannot receive submissions.
 
-## 🛠️ Development
+## Editing content
 
-### Prerequisites
-- Node.js 18+
-- npm or yarn
+- `messages/en.json`: interface copy.
+- `src/lib/forum.ts`: meeting dates, deadline dates, programme estimates, attendance limit and upload limits.
+- `src/lib/committees.ts`: names, affiliations and member emails. `soc` maps to Advisory Committee; `loc` maps to Organizing Committee. Empty email fields show “To be announced”.
+- `src/lib/hero.ts`: cover-image selection and attribution. [ASSETS.md](ASSETS.md) records the image sources.
 
-### Getting Started
+Talk/poster submissions close on **2026-12-01** and attend-only registration on **2026-12-07**, inclusive through 23:59:59.999 China Standard Time (UTC+8). Set `FORUM_FORMS_ENABLED=false` to close the form explicitly. The 50-person event limit is managed through organizer confirmation; a submitted form does not reserve a place automatically.
 
-1. **Install dependencies**
-   ```bash
-   npm install
-   ```
+## Private records and passport materials
 
-2. **Start development server**
-   ```bash
-   npm run dev
-   ```
+Configure `FORUM_DATA_DIR` as a private, persistent absolute directory on the server. If omitted, the application uses `data/` in its working directory. This directory is ignored by Git and is never served through a public route.
 
-3. **Build for production**
-   ```bash
-   npm run build
-   ```
+`POST /api/registrations` stores one atomic schema-3 record containing registration details, any abstract, discussion preferences and campus-entry materials. Retrying the same request with identical information returns the same receipt. There is no public records-listing API. The former `POST /api/abstracts` endpoint returns 410 and points to the combined form.
 
-4. **Serve static files locally**
-   ```bash
-   cd out
-   python3 -m http.server 8000
-   ```
+Document numbers, nationality and passport photos are encrypted with AES-256-GCM. The private key is generated as `.campus-identity-key` inside the data directory. Back up records **and this key together**; losing the key prevents recovery of identity materials. The key is stored on the same host, not in an external key-management service.
 
-### Available Scripts
+JPEG/PNG passport uploads are limited to 5 MiB. The server validates file type, signature and successful decoding, limits decoding to 40 megapixels, and re-encodes images as JPEG at up to 2400 pixels with EXIF removed. Sensitive identity details and images are excluded from browser drafts, API responses and downloaded receipts.
 
-- `npm run dev` - Start development server
-- `npm run build` - Build production static site
-- `npm run start` - Start production server (not needed for static deployment)
-- `npm run lint` - Run ESLint
+An organizer with filesystem access can export campus-entry materials:
 
-## 🌐 Deployment
+```bash
+FORUM_DATA_DIR=/srv/astroconnect-2026/private-data \
+  node scripts/export-campus.mjs --output /private/export-location/campus-entries.json
+```
 
-The site is built as a static export and can be deployed to any static hosting platform:
+The JSON includes decrypted document details. Photos are written to a sibling `campus-entries-passport-photos/` directory. Export files use owner-only permissions and do not overwrite existing output. Keep all exports private and outside public web folders or Git-tracked paths.
 
-- **Vercel**: Deploy directly from GitHub
-- **Netlify**: Drag and drop the `out` folder
-- **GitHub Pages**: Upload the `out` folder contents
-- **AWS S3**: Upload to S3 bucket with static website hosting
-- **Any CDN**: Upload static files to any content delivery network
+## Version-control exclusions
 
-## 📝 Content Management
+`.gitignore` excludes runtime records, identity keys, uploaded/exported passport materials, populated environment files, dependencies, generated builds, screenshots/test output, local backups and standalone HTML copies. Only `.env.example` is shared. Public JWST images and campus maps are intentional website assets and remain tracked.
 
-### Adding New Content
+Test source scripts and the npm lockfile are retained so changes remain verifiable. For checks that submit synthetic data, use a separate service and data directory:
 
-1. **Update translations**: Edit `messages/en.json` and `messages/zh.json`
-2. **Modify pages**: Update components in `src/app/[locale]/`
-3. **Rebuild**: Run `npm run build` to generate new static files
+```bash
+npm run build
+npm run typecheck
+npm run test:deadlines
+FORUM_DATA_DIR=/tmp/astroconnect-check npm start -- --port 3026
+# In another terminal:
+TEST_BASE_URL=http://localhost:3026 FORUM_DATA_DIR=/tmp/astroconnect-check npm run test:smoke
+```
 
-### Customization
+`scripts/browser-test.cjs` uses Playwright for form and responsive-layout checks. `PLAYWRIGHT_MODULE` and `CHROME_PATH` can reference an existing local installation. Generated results are ignored.
 
-- **Colors**: Modify TailwindCSS classes in components
-- **Fonts**: Update font imports in layout files
-- **Images**: Add to `public/` directory and reference in components
-- **Content**: Update translation files for text changes
+## Offline viewing copy
 
-## 🔧 Configuration
-
-### Internationalization
-The site supports English (en) and Chinese (zh) locales. Configure in:
-- `src/i18n.ts` - Request configuration
-- `src/middleware.ts` - Routing middleware
-- `messages/*.json` - Translation files
-
-### Build Configuration
-- `next.config.ts` - Next.js configuration with static export
-- `tailwind.config.ts` - TailwindCSS customization
-- `tsconfig.json` - TypeScript configuration
-
-## 📊 Performance
-
-- **Lighthouse Score**: 95+ for Performance, Accessibility, Best Practices, and SEO
-- **Bundle Size**: Optimized with tree shaking and code splitting
-- **Loading Speed**: Pre-rendered static pages for instant loading
-- **SEO**: Server-side rendering with proper meta tags
-
-## 🎯 Accessibility
-
-- Semantic HTML structure
-- ARIA labels for interactive elements
-- Keyboard navigation support
-- Color contrast compliance (WCAG AA)
-- Screen reader compatibility
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
-
-## 📄 License
-
-This project is created for the PKU + THU Joint Postdoc Forum in Astronomy and Astrophysics 2025.
-
-## 📞 Contact
-
-For technical questions about this website, please contact the organizing committee members listed on the contact page.
-
----
-
-**Built with ❤️ for the astronomy and astrophysics community**
+`scripts/export-preview.cjs` captures the public pages into one self-contained HTML file. It includes navigation and visual form interactions, but does not submit or save information. Generated HTML copies are excluded from Git. Regenerate after website changes with `npm run export:preview`, using Playwright and `PREVIEW_BASE_URL` for the running site.

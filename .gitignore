@@ -1,41 +1,66 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
-# dependencies
-/node_modules
-/.pnp
+# Dependencies and local package-manager state
+node_modules/
+.node_modules-backup-*/
+.pnp
 .pnp.*
 .yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/versions
+!.yarn/patches/
+!.yarn/plugins/
+!.yarn/releases/
+!.yarn/versions/
+.npm/
 
-# testing
-/coverage
+# Next.js and generated build output
+.next/
+out/
+dist/
+build/
+.vercel/
+*.tsbuildinfo
+next-env.d.ts
 
-# next.js
-/.next/
-/out/
-
-# production
-/build
-
-# misc
-.DS_Store
+# Private registration records, identity keys and exported passport materials
+/data/
+/private-data/
+/uploads/
+/exports/
+/private-exports/
+**/.campus-identity-key
+*-passport-photos/
+campus-entries*.json
+campus-export*.json
 *.pem
+*.key
+*.p12
+*.pfx
 
-# debug
+# Local configuration; only the blank example is shared
+.env
+.env.*
+!.env.example
+
+# Generated test, review and offline-preview artifacts (keep test source scripts)
+coverage/
+test-results/
+playwright-report/
+blob-report/
+/preview/
+/previews/
+*-preview.html
+/VERIFICATION.md
+/migration-backups/
+/backups/
+*.bak
+*.tmp
+
+# Editor/OS metadata and logs
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
-
-# env files (can opt-in for committing if needed)
-.env*
-
-# vercel
-.vercel
-
-# typescript
-*.tsbuildinfo
-next-env.d.ts
