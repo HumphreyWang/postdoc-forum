@@ -12,7 +12,7 @@ A professional static website for the joint Postdoc Forum in Astronomy and Astro
 
 ## 📅 Event Details
 
-- **Date**: December 1-2, 2025
+- **Date**: December 14-15, 2026
 - **Venues**:
   - Day 1: KIAA, Peking University
   - Day 2: DoA, Tsinghua University
