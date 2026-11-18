@@ -1,11 +1,5 @@
 import Image from 'next/image';
-import {deadlinePassed, forum, meetingDateLabel} from '@/lib/forum';
-
-function deadlineLabel(date: string) {
-  return new Intl.DateTimeFormat('en-GB', {
-    month: 'long', day: 'numeric', timeZone: forum.timeZone
-  }).format(new Date(date + 'T12:00:00+08:00'));
-}
+import {deadlineLabel, deadlinePassed, forum, meetingDateLabel} from '@/lib/forum';
 
 export default function FormPage() {
   const closed = deadlinePassed('registration') || process.env.FORUM_FORMS_ENABLED === 'false';

@@ -39,7 +39,7 @@ See [DEPLOYMENT.md](DEPLOYMENT.md) for the Node deployment. The shareable HTML e
 - `src/lib/committees.ts`: names, affiliations and member emails. `soc` maps to Advisory Committee; `loc` maps to Organizing Committee. Empty email fields show “To be announced”.
 - `src/lib/hero.ts`: cover-image selection and attribution. [ASSETS.md](ASSETS.md) records the image sources.
 
-Talk/poster submissions close on **2026-12-01** and attend-only registration on **2026-12-07**, inclusive through 23:59:59.999 China Standard Time (UTC+8). Set `FORUM_FORMS_ENABLED=false` to hide the website’s registration entry. Manage submission availability and deadlines in Tencent Docs as well. The 50-person event limit is managed through organizer confirmation; a submitted form does not reserve a place automatically.
+Talk/poster submissions close on **2026-11-30** and attend-only registration on **2026-12-07**, inclusive through 23:59:59.999 China Standard Time (UTC+8). Set `FORUM_FORMS_ENABLED=false` to hide the website’s registration entry. Manage submission availability and deadlines in Tencent Docs as well. The 50-person event limit is managed through organizer confirmation; a submitted form does not reserve a place automatically.
 
 ## Records collected before the switch to Tencent Docs
 

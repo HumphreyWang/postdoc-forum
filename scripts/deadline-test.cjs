@@ -11,8 +11,8 @@ const temp=fs.mkdtempSync(path.join(os.tmpdir(),'forum-deadlines-'));
  const request=body=>new Request('http://localhost/api/registrations',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({requestId:randomUUID(),...personal,...body})});
  let n=0;
  for(const preference of ['oral','poster']){
-  const accepted=await submit(request({...research,preference,posterFallback:'yes'}),Date.parse('2026-12-01T23:59:59.999+08:00'));assert.equal(accepted.includesAbstract,true);n++;
-  await assert.rejects(()=>submit(request({...research,preference,posterFallback:'yes'}),Date.parse('2026-12-02T00:00:00+08:00')),error=>error.code==='abstract_closed');n++;
+  const accepted=await submit(request({...research,preference,posterFallback:'yes'}),Date.parse('2026-11-30T23:59:59.999+08:00'));assert.equal(accepted.includesAbstract,true);n++;
+  await assert.rejects(()=>submit(request({...research,preference,posterFallback:'yes'}),Date.parse('2026-12-01T00:00:00+08:00')),error=>error.code==='abstract_closed');n++;
  }
  const attendance=await submit(request({}),Date.parse('2026-12-07T23:59:59.999+08:00'));assert.equal(attendance.includesAbstract,false);n++;
  await assert.rejects(()=>submit(request({}),Date.parse('2026-12-08T00:00:00+08:00')),error=>error.code==='closed');n++;

@@ -19,6 +19,8 @@
   --conference-blue: #1f5796;
   --conference-rule: #d2dfe3;
   --conference-wash: #edf4f4;
+  --supporting-ink: #435a70;
+  --caption-size: .875rem;
 }
 #main { background-color: #fbfcfa; }
 #main h2, #main h3 { color: var(--conference-ink); }
@@ -78,7 +80,7 @@
 .format-numbers > div + div { padding-inline-start: 1.4rem; border-inline-start: 1px solid var(--conference-rule); }
 .format-numbers strong { color: var(--conference-blue); font-variant-numeric: tabular-nums; }
 .conference-info-panel:first-child { background: var(--conference-wash); border-color: transparent; }
-.conference-info-panel dt { font-size: .83rem; color: #425d70; }
+.conference-info-panel dt { font-size: .9375rem; color: var(--supporting-ink); }
 .programme-sessions .card { border-top: 3px solid #4b7f93; }
 .registration-page { padding-block: clamp(2.75rem, 6vw, 5rem) clamp(3rem, 8vw, 7rem); }
 .registration-heading { margin-bottom: 2rem; }
@@ -106,7 +108,7 @@
 .registration-dates-list dl > div { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .3rem 1rem; padding-block: .65rem; border-top: 1px solid var(--conference-rule); }
 .registration-dates-list dt, .registration-dates-list dd { font-size: .95rem; }
 .registration-dates-list dd { margin: 0; font-weight: 600; }
-.registration-dates-list small { color: #4a6174; }
+.registration-dates-list small { font-size: var(--caption-size); color: var(--supporting-ink); }
 @media (max-width: 700px) {
   .event-hero .hero-content { padding-block: 3.2rem 6rem; }
   .registration-entry { display: flex; flex-direction: column; }
@@ -132,10 +134,37 @@ h1, h2, h3 { text-wrap: balance; }
 .footer .galaxy-mark { width: 1.95rem; }
 .event-hero h1 { font-weight: 600; letter-spacing: -.04em; }
 .event-hero .hero-subtitle { font-weight: 500; letter-spacing: -.01em; }
-.event-hero .hero-credit { font-size: .78rem; line-height: 1.4; gap: .18rem; color: #ebf1f8; font-weight: 600; }
+.event-hero .hero-credit { font-size: var(--caption-size); line-height: 1.4; gap: .18rem; color: #ebf1f8; font-weight: 600; }
 .overview-main .overview-lead { font-weight: 430; }
 @media (max-width: 600px) {
   .brand { gap: .38rem; }
   .galaxy-mark { width: 2rem; }
   .event-hero .hero-content { padding-bottom: 6.5rem; }
+}
+
+/* Keep supporting information legible at normal browser zoom. */
+.conference-info-panel .sidebar-note,
+.overview-section .format-note,
+.committee-table th,
+.footer small,
+.footer .copyright,
+.format-numbers span {
+  font-size: var(--caption-size);
+  color: var(--supporting-ink);
+}
+.eyebrow { font-size: .8125rem; letter-spacing: .11em; }
+.footer p:not(.brand), .footer-links,
+.committee-table .committee-affiliation,
+.committee-table .committee-email,
+.image-credits-list .field-hint {
+  font-size: .9375rem;
+}
+.committee-email-pending { color: var(--supporting-ink); }
+.overview-main .scope-list,
+.format-numbers p, .format-details p,
+.conference-info-panel dd, .button, .hero .button, .text-link {
+  font-size: 1rem;
+}
+.overview-main .overview-section > p:not(.overview-lead, .format-note) {
+  font-size: 1.0625rem;
 }

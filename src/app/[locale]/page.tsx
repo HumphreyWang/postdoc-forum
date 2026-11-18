@@ -1,7 +1,7 @@
 import {getTranslations, setRequestLocale} from 'next-intl/server';
 import Link from 'next/link';
 import Image from 'next/image';
-import {forum, meetingDateLabel} from '@/lib/forum';
+import {deadlineLabel, forum, meetingDateLabel} from '@/lib/forum';
 import {heroBackground} from '@/lib/hero';
 import Committees from '@/components/Committees';
 
@@ -78,8 +78,8 @@ export default async function Home({params}: {params: Promise<{locale:string}>})
         <section className="conference-info-panel">
           <h2>{t('importantDatesTitle')}</h2>
           <dl>
-            <dt>{t('abstractDeadline')}</dt><dd>{forum.abstractDeadline}</dd>
-            <dt>{t('registrationDeadline')}</dt><dd>{forum.registrationDeadline}</dd>
+            <dt>{t('abstractDeadline')}</dt><dd><time dateTime={forum.abstractDeadline}>{deadlineLabel(forum.abstractDeadline)}</time></dd>
+            <dt>{t('registrationDeadline')}</dt><dd><time dateTime={forum.registrationDeadline}>{deadlineLabel(forum.registrationDeadline)}</time></dd>
           </dl>
           <p className="sidebar-note">{t('deadlineTime')}</p>
           <p className="sidebar-note">{t('registrationHelp')}</p>
