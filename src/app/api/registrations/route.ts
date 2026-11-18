@@ -1,3 +1,9 @@
-import {handleSubmission} from '@/lib/submissions';
-export const runtime = 'nodejs';
-export async function POST(request: Request) { return handleSubmission(request); }
+import {forum} from '@/lib/forum';
+
+// Older open tabs may still try to send data to the former on-site form.
+export function POST() {
+  return Response.json(
+    {error: 'registration_moved', registrationUrl: forum.registrationUrl},
+    {status: 410, headers: {'Cache-Control': 'no-store'}}
+  );
+}

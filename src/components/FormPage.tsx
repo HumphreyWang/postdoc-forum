@@ -1,15 +1,44 @@
-import {getTranslations} from 'next-intl/server';
-import {deadlinePassed, forum} from '@/lib/forum';
-import SubmissionForm from './SubmissionForm';
-export default async function FormPage() {
-  const t=await getTranslations('form');const c=await getTranslations('common');
-  const closed=deadlinePassed('registration')||process.env.FORUM_FORMS_ENABLED==='false';
-  return <div className="container section"><header className="page-heading"><p className="eyebrow">JOIN THE FORUM / 2026</p><h1>{t('registrationTitle')}</h1><p>{t('registrationIntro')}</p></header>
-    <div className="form-layout"><aside className="form-aside"><div className="card"><span className="status-badge">{c('tentative')}</span>
-      <div className="deadline-block"><p>{t('talkPosterDeadline')}</p><h2>{forum.abstractDeadline}</h2></div>
-      <div className="deadline-block"><p>{t('registrationDeadline')}</p><h2>{forum.registrationDeadline}</h2></div>
-      <p className="field-hint">{t('deadlineTime')}</p><hr/><p>{t('privacy')}</p>
-    </div><div className="form-guide"><h3>{t('oneForm')}</h3><p>{t('oneFormHelp')}</p></div></aside>
-    {closed?<div className="notice" role="status">{t('closed')}</div>:<SubmissionForm abstractClosed={deadlinePassed('abstract')}/>}
-    </div></div>;
+import Image from 'next/image';
+import {deadlinePassed, forum, meetingDateLabel} from '@/lib/forum';
+
+function deadlineLabel(date: string) {
+  return new Intl.DateTimeFormat('en-GB', {
+    month: 'long', day: 'numeric', timeZone: forum.timeZone
+  }).format(new Date(date + 'T12:00:00+08:00'));
+}
+
+export default function FormPage() {
+  const closed = deadlinePassed('registration') || process.env.FORUM_FORMS_ENABLED === 'false';
+  return (
+    <div className="container registration-page">
+      <header className="registration-heading">
+        <p className="event-dateline">AstroConnect 2026 <span aria-hidden="true">/</span> Beijing</p>
+        <h1>Registration</h1>
+        <p>{meetingDateLabel} · No registration fee · Up to {forum.participantLimit} participants</p>
+      </header>
+      {closed ? <p role="status">Registration is closed.</p> : (
+        <section className="registration-entry" aria-labelledby="registration-entry-title">
+          <div className="registration-instructions">
+            <h2 id="registration-entry-title">Register on Tencent Docs</h2>
+            <p>Open the registration form using the link below, or scan the QR code with your phone.</p>
+            <a className="button" href={forum.registrationUrl} target="_blank" rel="noopener noreferrer">
+              Open registration form
+            </a>
+            <div className="registration-dates-list">
+              <h3>Registration deadlines</h3>
+              <dl>
+                <div><dt>Talk and poster abstracts</dt><dd><time dateTime={forum.abstractDeadline}>{deadlineLabel(forum.abstractDeadline)}</time></dd></div>
+                <div><dt>Attend-only registration</dt><dd><time dateTime={forum.registrationDeadline}>{deadlineLabel(forum.registrationDeadline)}</time></dd></div>
+              </dl>
+              <small>Both deadlines are at 23:59 Beijing time (UTC+8).</small>
+            </div>
+          </div>
+          <figure className="registration-qr">
+            <Image src="/images/tencent-registration.png" alt="QR code for the AstroConnect 2026 registration form on Tencent Docs" width={1000} height={1000} preload/>
+            <figcaption>Scan to register</figcaption>
+          </figure>
+        </section>
+      )}
+    </div>
+  );
 }

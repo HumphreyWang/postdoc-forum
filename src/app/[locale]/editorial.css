@@ -1,0 +1,141 @@
+@font-face {
+  font-family: "Space Grotesk";
+  src: url("/fonts/space-grotesk-latin.woff2") format("woff2");
+  font-weight: 300 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Source Sans 3";
+  src: url("/fonts/source-sans-3-latin.woff2") format("woff2");
+  font-weight: 200 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Shared conference typography and page rhythm. */
+:root {
+  --conference-ink: #122b43;
+  --conference-blue: #1f5796;
+  --conference-rule: #d2dfe3;
+  --conference-wash: #edf4f4;
+}
+#main { background-color: #fbfcfa; }
+#main h2, #main h3 { color: var(--conference-ink); }
+.event-hero .hero-content { padding-block: clamp(4rem, 8vw, 7rem) 7.5rem; }
+.event-hero h1 { font-size: clamp(3rem, 7.5vw, 6rem); line-height: 1.04; letter-spacing: -.04em; }
+.event-hero .hero-subtitle { font-size: clamp(1.65rem, 3.25vw, 2.65rem); line-height: 1.23; text-wrap: balance; color: #e0eaf3; }
+.hero-event-details { margin-block: 1.8rem; padding-inline-start: 0; }
+.overview-layout { gap: clamp(2rem, 5vw, 5rem); }
+.overview-main h2, .committees-section > header h2 {
+  font-size: clamp(1.7rem, 3vw, 2.5rem); letter-spacing: -.04em;
+}
+/* Keep the single opening paragraph readable alongside the conference details. */
+.overview-main .overview-lead {
+  max-inline-size: 68ch;
+  margin-block-end: 0;
+  font-size: clamp(1.0625rem, 1.28vw, 1.1875rem);
+  line-height: 1.72;
+  color: #243c50;
+  text-wrap: pretty;
+}
+.overview-main .overview-section {
+  margin-block-end: 0;
+}
+.overview-main .overview-section + .overview-section {
+  border-block-start: 1px solid var(--conference-rule);
+  margin-block-start: clamp(1.8rem, 3.4vw, 3rem);
+  padding-block-start: clamp(1.5rem, 2.6vw, 2.3rem);
+}
+.overview-section h2 { text-wrap: balance; }
+.conference-info-panel .conference-facts > div {
+  display: grid;
+  grid-template-columns: 5.25rem minmax(0, 1fr);
+  align-items: baseline;
+  gap: .75rem;
+  padding-block: .8rem;
+  border-bottom: 1px solid #d3e0e1;
+}
+.conference-info-panel .conference-facts > div:first-child { padding-block-start: 0; }
+.conference-info-panel .conference-facts :is(dt, dd) { margin: 0; }
+.conference-info-panel .conference-facts dd { line-height: 1.55; }
+.conference-facts time, .conference-info-panel dd { font-variant-numeric: tabular-nums; }
+@media (min-width: 601px) and (max-width: 740px) {
+  .conference-sidebar { grid-template-columns: 1fr; }
+}
+@media (max-width: 360px) {
+  .conference-info-panel .conference-facts > div { grid-template-columns: 1fr; gap: .18rem; }
+}
+.overview-main .scope-list { list-style: none; margin-top: 1.2rem; padding: 0; }
+.scope-list li {
+  display: grid; grid-template-columns: .45rem 1fr; align-items: baseline; gap: .9rem;
+  padding: .75rem 0; border-bottom: 1px solid #e0e7e9;
+}
+.scope-list li::before { content: ''; align-self: start; margin-top: .65rem; width: .35rem; height: .35rem; border-radius: 50%; background: #32767c; }
+.scope-list li + li { margin-top: 0; }
+.format-numbers { border-block: 1px solid var(--conference-rule); gap: 0; }
+.format-numbers > div { background: transparent; border: none; border-radius: 0; padding: 1.5rem 1rem 1.5rem 0; }
+.format-numbers > div + div { padding-inline-start: 1.4rem; border-inline-start: 1px solid var(--conference-rule); }
+.format-numbers strong { color: var(--conference-blue); font-variant-numeric: tabular-nums; }
+.conference-info-panel:first-child { background: var(--conference-wash); border-color: transparent; }
+.conference-info-panel dt { font-size: .83rem; color: #425d70; }
+.programme-sessions .card { border-top: 3px solid #4b7f93; }
+.registration-page { padding-block: clamp(2.75rem, 6vw, 5rem) clamp(3rem, 8vw, 7rem); }
+.registration-heading { margin-bottom: 2rem; }
+.event-dateline { color: #315c70; font-weight: 600; font-size: .92rem; }
+.event-dateline span { margin-inline: .45rem; color: #7a929e; }
+.registration-heading h1 { font-size: clamp(2.7rem, 5.4vw, 4.8rem); margin-block: .55rem .8rem; letter-spacing: -.05em; }
+.registration-entry {
+  display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, .85fr);
+  overflow: hidden; background: #fff; border: 1px solid var(--conference-rule); border-radius: .85rem;
+}
+.registration-instructions { padding: clamp(1.4rem, 4.5vw, 4rem); }
+.registration-instructions h2 { font-size: clamp(1.6rem, 3vw, 2.3rem); margin-bottom: .85rem; }
+.registration-instructions > p { max-width: 45ch; margin-bottom: 1.5rem; }
+.registration-instructions .button { background: var(--conference-blue); border-color: var(--conference-blue); min-height: 48px; }
+.registration-instructions .button:hover { background: #153f71; }
+.registration-qr {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 1rem; margin: 0; background: var(--conference-wash); padding: 2.5rem 1.25rem;
+}
+.registration-qr img { width: min(100%, 240px); height: auto; padding: 1rem; background: #fff; border: 1px solid var(--conference-rule); }
+.registration-qr figcaption { font-size: 1rem; color: var(--conference-ink); font-weight: 600; }
+.registration-dates-list { margin-top: 2.3rem; }
+.registration-dates-list h3 { font-size: 1rem; margin-bottom: .55rem; }
+.registration-dates-list dl { margin: 0 0 .65rem; }
+.registration-dates-list dl > div { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .3rem 1rem; padding-block: .65rem; border-top: 1px solid var(--conference-rule); }
+.registration-dates-list dt, .registration-dates-list dd { font-size: .95rem; }
+.registration-dates-list dd { margin: 0; font-weight: 600; }
+.registration-dates-list small { color: #4a6174; }
+@media (max-width: 700px) {
+  .event-hero .hero-content { padding-block: 3.2rem 6rem; }
+  .registration-entry { display: flex; flex-direction: column; }
+  .registration-instructions { display: contents; }
+  .registration-entry { padding: 1.4rem; }
+  .registration-instructions .button { align-self: flex-start; margin-bottom: 1.5rem; }
+  .registration-qr { order: 1; padding: 1.3rem; border-radius: .5rem; }
+  .registration-qr img { width: min(100%, 200px); }
+  .registration-dates-list { order: 2; margin-top: 1.75rem; }
+}
+
+:root {
+  --display-face: "Space Grotesk", Arial, sans-serif;
+  --reading-face: "Source Sans 3", "Segoe UI", Arial, sans-serif;
+}
+body { font-family: var(--reading-face); font-size: 1.0625rem; }
+h1, h2, h3, .brand, .format-numbers strong { font-family: var(--display-face); }
+h1, h2, h3 { text-wrap: balance; }
+.brand { gap: .5rem; }
+.brand-name { font-weight: 650; line-height: 1.12; letter-spacing: -.04em; }
+.brand-name b { color: #315fa4; font-size: .84em; font-weight: 550; letter-spacing: -.025em; }
+.galaxy-mark { display: block; width: 2.85rem; height: auto; flex: none; }
+.footer .galaxy-mark { width: 1.95rem; }
+.event-hero h1 { font-weight: 600; letter-spacing: -.04em; }
+.event-hero .hero-subtitle { font-weight: 500; letter-spacing: -.01em; }
+.event-hero .hero-credit { font-size: .78rem; line-height: 1.4; gap: .18rem; color: #ebf1f8; font-weight: 600; }
+.overview-main .overview-lead { font-weight: 430; }
+@media (max-width: 600px) {
+  .brand { gap: .38rem; }
+  .galaxy-mark { width: 2rem; }
+  .event-hero .hero-content { padding-bottom: 6.5rem; }
+}

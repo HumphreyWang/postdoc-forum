@@ -2,7 +2,7 @@
 
 All three candidate images were supplied by the organiser and compared for the homepage. The default is **Leo P**, selected for its dark areas and blue star field. Only the chosen background is loaded by the homepage; no carousel or flashing effects are used.
 
-The original downloaded JPEGs are unchanged. The page crops them to fit and applies CSS brightness/saturation filters plus a dark gradient beneath the text. The cover shows a concise institution-only Credit line. It links to `/en/credits`, where full original attribution, source links, licence links and display-adjustment details remain available.
+The original downloaded JPEGs are unchanged. The page crops them to fit and applies CSS brightness/saturation filters plus a dark gradient beneath the text. The cover shows a concise institution-only Credit line. The footer links to `/en/credits`, where full original attribution, source links, licence links and display-adjustment details remain available.
 
 | Local file | Official source | Required credit |
 | --- | --- | --- |

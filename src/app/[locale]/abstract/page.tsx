@@ -1,5 +1,5 @@
 import {redirect} from 'next/navigation';
 export default async function Abstract({params}: {params: Promise<{locale:string}>}) {
   const {locale}=await params;
-  redirect(`/${locale}/registration#presentation`);
+  redirect(`/${locale}/registration`);
 }

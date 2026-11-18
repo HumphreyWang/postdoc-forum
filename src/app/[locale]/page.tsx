@@ -15,7 +15,7 @@ export default async function Home({params}: {params: Promise<{locale:string}>})
       <Image className="hero-image" src={heroBackground.src} alt="" fill preload sizes="100vw" style={{objectPosition:heroBackground.position}}/>
       <div className="hero-shade" aria-hidden="true"/>
       <div className="container hero-content">
-        <p className="eyebrow">{t('eyebrow')}</p>
+
         <h1 id="event-title">{t('title')}</h1>
         <p className="hero-subtitle">{t('subtitle')}</p>
         <div className="hero-event-details">
@@ -27,7 +27,8 @@ export default async function Home({params}: {params: Promise<{locale:string}>})
         </div>
       </div>
       <div className="container hero-credit">
-        <Link href={`/${locale}/credits`}>Credit: {heroBackground.institutions}</Link>
+        <span>Background: JWST Image of {heroBackground.objectName}</span>
+        <span>Credit: {heroBackground.institutions}</span>
       </div>
     </section>
 
@@ -35,8 +36,7 @@ export default async function Home({params}: {params: Promise<{locale:string}>})
       <div className="overview-main">
         <section id="overview" className="overview-section" aria-labelledby="overview-heading">
           <h2 id="overview-heading">{t('overviewTitle')}</h2>
-          <p>{t('overviewText')}</p>
-          <p>{t('rationaleText')}</p>
+          <p className="overview-lead">{t('overviewText')}</p>
         </section>
         <section id="scientific-scope" className="overview-section" aria-labelledby="scope-heading">
           <h2 id="scope-heading">{t('scopeTitle')}</h2>
@@ -47,7 +47,7 @@ export default async function Home({params}: {params: Promise<{locale:string}>})
         </section>
         <section id="conference-format" className="overview-section" aria-labelledby="format-heading">
           <h2 id="format-heading">{t('formatTitle')}</h2>
-          <p>{t('formatIntro')}</p>
+
           <div className="format-numbers">
             <div><span>{t('approximately')}</span><strong>{forum.approximateTalks}</strong><h3>{t('talksTitle')}</h3><p>{t('talksText')}</p></div>
             <div><span>{t('approximately')}</span><strong>{forum.approximatePosters}</strong><h3>{t('postersTitle')}</h3><p>{t('postersText')}</p></div>
@@ -64,13 +64,13 @@ export default async function Home({params}: {params: Promise<{locale:string}>})
       <aside className="conference-sidebar" aria-label={t('informationTitle')}>
         <section className="conference-info-panel">
           <h2>{t('informationTitle')}</h2>
-          <dl>
-            <dt>{t('dateLabel')}</dt><dd>{meetingDateLabel}</dd>
-            <dt>{t('locationLabel')}</dt><dd>{t('city')}</dd>
-            <dt>{t('venuesLabel')}</dt><dd><ul className="venue-list"><li>{t('kiaaVenue')}</li><li>{t('doaVenue')}</li></ul></dd>
-            <dt>{t('participantLabel')}</dt><dd>{t('participants',{count:forum.participantLimit})}</dd>
-            <dt>{t('feeLabel')}</dt><dd>{t('fee')}</dd>
-            <dt>{t('mealsLabel')}</dt><dd>{t('meals')}</dd>
+          <dl className="conference-facts">
+            <div><dt>{t('dateLabel')}</dt><dd>{meetingDateLabel}</dd></div>
+            <div><dt>{t('locationLabel')}</dt><dd>{t('city')}</dd></div>
+            <div><dt>{t('venuesLabel')}</dt><dd><ul className="venue-list"><li>{t('kiaaVenue')}</li><li>{t('doaVenue')}</li></ul></dd></div>
+            <div><dt>{t('participantLabel')}</dt><dd>{t('participants',{count:forum.participantLimit})}</dd></div>
+            <div><dt>{t('feeLabel')}</dt><dd>{t('fee')}</dd></div>
+            <div><dt>{t('mealsLabel')}</dt><dd>{t('meals')}</dd></div>
           </dl>
           <p className="sidebar-note">{t('venueNote')}</p>
           <Link className="text-link" href={`/${locale}/venue`}>{t('venueLink')} →</Link>

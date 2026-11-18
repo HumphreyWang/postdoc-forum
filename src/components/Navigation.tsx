@@ -1,6 +1,7 @@
 'use client';
 import {useLocale, useTranslations} from 'next-intl';
 import Link from 'next/link';
+import ForumWordmark from './ForumWordmark';
 import {usePathname} from 'next/navigation';
 import {useState} from 'react';
 export default function Navigation() {
@@ -13,7 +14,7 @@ export default function Navigation() {
       className={`nav-link ${pathname === href ? 'active' : ''}`}>{t(key)}</Link>;
   });
   return <header className="site-header"><nav className="container nav-inner" aria-label="Main navigation">
-    <Link href={`/${locale}`} className="brand"><span className="brand-orbit" aria-hidden="true">✦</span><span>AstroConnect <b>2026</b></span></Link>
+    <Link href={`/${locale}`} className="brand"><ForumWordmark/></Link>
     <div className="desktop-nav">{links}</div>
     <div className="nav-actions">
     <button type="button" className="menu-toggle" aria-label={t('menu')} aria-expanded={open} aria-controls="mobile-menu" onClick={() => setOpen(!open)}>{open ? '×' : '☰'}</button></div>
