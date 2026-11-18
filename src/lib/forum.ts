@@ -2,6 +2,7 @@
 export const forum = {
   registrationUrl: 'https://docs.qq.com/form/page/DUXF5YnRydUZmS0ZI',
   year: 2026, registrationDeadline: '2026-12-07', abstractDeadline: '2026-12-02',
+  programmeAnnouncement: '2026-12-07',
   // Meeting dates/venues follow Announcement/AstroConnect_2026.pptx.
   meetingStart: '2026-12-14', meetingEnd: '2026-12-15',
   approximateTalks: 20, approximatePosters: 25, participantLimit: 50,

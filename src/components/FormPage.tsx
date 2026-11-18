@@ -19,12 +19,13 @@ export default function FormPage() {
               Open registration form
             </a>
             <div className="registration-dates-list">
-              <h3>Registration deadlines</h3>
+              <h3>Important dates</h3>
               <dl>
                 <div><dt>Talk and poster abstracts</dt><dd><time dateTime={forum.abstractDeadline}>{deadlineLabel(forum.abstractDeadline)}</time></dd></div>
                 <div><dt>Attend-only registration</dt><dd><time dateTime={forum.registrationDeadline}>{deadlineLabel(forum.registrationDeadline)}</time></dd></div>
+                <div><dt>Programme announcement</dt><dd><time dateTime={forum.programmeAnnouncement}>{deadlineLabel(forum.programmeAnnouncement)}</time></dd></div>
               </dl>
-              <small>Both deadlines are at 23:59 Beijing time (UTC+8).</small>
+              <small>Abstracts and attend-only registrations are due by 23:59 Beijing time (UTC+8) on their respective dates.</small>
             </div>
           </div>
           <figure className="registration-qr">

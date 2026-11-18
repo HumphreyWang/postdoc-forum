@@ -56,7 +56,7 @@ export default async function Home({params}: {params: Promise<{locale:string}>})
             <div><h3>{t('breaksTitle')}</h3><p>{t('breaksText')}</p></div>
             <div><h3>{t('discussionsTitle')}</h3><p>{t('discussionsText')}</p></div>
           </div>
-          <p className="format-note">{t('formatNote')}</p>
+          <p className="format-note">{t('formatNote', {announcementDate: deadlineLabel(forum.programmeAnnouncement)})}</p>
           <Link className="text-link" href={`/${locale}/program`}>{c('learn')} →</Link>
         </section>
       </div>
@@ -80,6 +80,7 @@ export default async function Home({params}: {params: Promise<{locale:string}>})
           <dl>
             <dt>{t('abstractDeadline')}</dt><dd><time dateTime={forum.abstractDeadline}>{deadlineLabel(forum.abstractDeadline)}</time></dd>
             <dt>{t('registrationDeadline')}</dt><dd><time dateTime={forum.registrationDeadline}>{deadlineLabel(forum.registrationDeadline)}</time></dd>
+            <dt>{t('programmeAnnouncement')}</dt><dd><time dateTime={forum.programmeAnnouncement}>{deadlineLabel(forum.programmeAnnouncement)}</time></dd>
           </dl>
           <p className="sidebar-note">{t('deadlineTime')}</p>
           <p className="sidebar-note">{t('registrationHelp')}</p>
